@@ -29,7 +29,7 @@ namespace WpfResourcesBuilder
             }
 
             sb.AppendLine();
-            sb.AppendLine("namespace TCC.R");
+            sb.AppendLine($"namespace {args[2]}");
             sb.AppendLine("{");
             dictionaries.ForEach(dict =>
             {
