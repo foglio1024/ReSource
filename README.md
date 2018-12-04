@@ -50,6 +50,25 @@ namespace TCC.R
    ...
 }
 ```
+
+Resources can then be referenced directly:
+```csharp
+// normal way 
+//  - prone to typos
+//  - need to know resource type beforehand to properly cast it
+//  - can cause runtime exceptions
+var res = ((Color)App.Current.FindResource("HpColor"));
+
+
+// strongly-typed way 
+// - no typos due to not using string name directly
+// - type already known
+// - runtime exceptions only if the resource file is not re-generated before build (which shouldn't happen)
+var res = TCC.R.Colors.HpColor;
+
+```
+
 ## Issues
 - Resources defined **directly** in the `App.xaml` file are not parsed
 - `using` directives are not generated: this will cause compile errors at the first execution. When this happens the generated file should be opened to add the missing directives. Manually added `usings` will be kept at the next execution of the script.
+- Dictionaries defined in different assemblies may cause errors (not tested)
