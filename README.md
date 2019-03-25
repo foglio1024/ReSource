@@ -1,4 +1,4 @@
-# WpfResourcesBuilder
+# WPF Resources Builder
 A small C# script which parses an `App.xaml` file and builds a static class containing a public static property for each resource defined in the XAML file and referenced resource dictionaries. **This allows XAML-defined resources to be referenced in a strongly-typed way in C#**, without using the `FindResource("Name")` method.
 
 ## Usage
