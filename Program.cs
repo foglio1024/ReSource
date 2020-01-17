@@ -33,7 +33,9 @@ namespace WpfResourcesBuilder
             sb.AppendLine("{");
             dictionaries.ForEach(dict =>
             {
-                var dictPath = Path.Combine(Path.GetDirectoryName(appxamlPath), dict.Attribute("Source").Value);
+                var src = dict.Attribute("Source").Value;
+                if (src.StartsWith("pack")) return;
+                var dictPath = Path.Combine(Path.GetDirectoryName(appxamlPath), src);
                 var dictDoc = XDocument.Load(dictPath);
 
                 var resources = dictDoc.Descendants().Where(x => x.Name.LocalName.ToString() != ("ResourceDictionary")).ToList();
