@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>D:\Repos\TCC\dependencies\FoglioUtils\FoglioUtils\FoglioUtils.csproj D:\Repos\TCC\dependencies\FoglioUtils\FoglioUtils\R.cs FoglioUtils.R</StartArguments>
+    <StartArguments>D:\Repos\TCC\TCC.Core\TCC.Core.csproj D:\Repos\TCC\TCC.Core\R.cs TCC.R</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
-    <ProjectView>ShowAllFiles</ProjectView>
+    <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <StartArguments>D:\Repos\TCC\TCC.Core\TCC.Core.csproj D:\Repos\TCC\TCC.Core\R.cs TCC.R</StartArguments>
