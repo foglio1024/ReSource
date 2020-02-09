@@ -56,7 +56,7 @@ namespace ReSource
                     }).ToList();
                 ret.Sort();
                 
-                Console.WriteLine($"[WRB] Found {ret.Count} ResourceDictionaries.");
+                Console.WriteLine($"[RS] Found {ret.Count} ResourceDictionaries.");
             });
 
             return ret;

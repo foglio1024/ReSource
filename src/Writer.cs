@@ -51,13 +51,13 @@ namespace ReSource
 
         public void Save(string outputPath)
         {
-            Console.WriteLine($"[WRB] Adding {Usings.Count} usings");
+            Console.WriteLine($"[RS] Adding {Usings.Count} usings");
             Usings.Sort();
             Usings.ForEach(ns => _headerSb.AppendLine($"using {ns};"));
             _headerSb.AppendLine();
             _headerSb.Append(_contentSb);
             
-            Console.WriteLine($"[WRB] Saving resources to {outputPath}");
+            Console.WriteLine($"[RS] Saving resources to {outputPath}");
             File.WriteAllText(outputPath, _headerSb.ToString());
         }
 

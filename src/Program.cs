@@ -24,15 +24,15 @@ namespace ReSource
             _csprojPath = args[0];
             if (!File.Exists(_csprojPath))
             {
-                Console.WriteLine($"[WRB] Error: {_csprojPath} not found");
-                return;
+                Console.WriteLine($"[RS] Error: {_csprojPath} not found");
+                Environment.Exit(-1);
             }
 
             _assemblyPath = args[1];
             if (!File.Exists(_assemblyPath))
             {
-                Console.WriteLine($"[WRB] Error: {_assemblyPath} not found");
-                return;
+                Console.WriteLine($"[RS] Warning: {_assemblyPath} not found, skipping.");
+                Environment.Exit(0);
             }
 
             _outputPath = args[2];
@@ -45,7 +45,7 @@ namespace ReSource
             if (!UriParser.IsKnownScheme("pack"))
                 _ = new Application();
 
-            Console.WriteLine($"[WRB] Generating resources for {_csprojPath}");
+            Console.WriteLine($"[RS] Generating resources for {_csprojPath}");
 
             Writer = new Writer(ProjName);
             Reader = new AssemblyReader(_assemblyPath);
@@ -54,7 +54,7 @@ namespace ReSource
 
             Reader.GetDictionaries().ForEach(d =>
             {
-                Console.WriteLine($"[WRB] Processing {d.FullName}");
+                Console.WriteLine($"[RS] Processing {d.FullName}");
                 Writer.Add(d.Build());
             });
 
@@ -62,7 +62,7 @@ namespace ReSource
 
             Writer.Save(_outputPath);
 
-            Console.WriteLine("[WRB] Done!");
+            Console.WriteLine("[RS] Done!");
         }
     }
 }
