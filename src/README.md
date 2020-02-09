@@ -1,14 +1,14 @@
-# WPF Resources Builder
-A small C# script which parses an `App.xaml` file and builds a static class containing a public static property for each resource defined in the XAML file and referenced resource dictionaries. **This allows XAML-defined resources to be referenced in a strongly-typed way in C#**, without using the `FindResource("Name")` method.
+# ReSource
+A small C# script which builds static resource references from ResourceDictionaries in WPF applications. **This allows XAML-defined resources to be referenced in a strongly-typed way in C#**, without using the `FindResource("Name")` method.
 
 ## Usage
 `
-.\WpfResourcesBuilder.exe <source-App.xaml-path> <destination-cs-file-path> <namespace>
+.\ReSource.exe <source-csproj-path> <main-source-assembly> <destination-cs-file-path> <namespace>
 `
 
 Best way to run this is to set it as pre-build command in **project properties** -> **Build events** -> **Pre-build event command line** box, example:
 ```
-WpfResourcesBuilder.exe $(ProjectDir)\App.xaml $(ProjectDir)\R.cs TCC.R
+ReSource.exe $(ProjectDir)\TCC.csproj $(TargetDir) $(ProjectDir)\R.cs TCC.R
 ```
 
 ## Example
@@ -70,5 +70,3 @@ var res = TCC.R.Colors.HpColor;
 
 ## Issues
 - Resources defined **directly** in the `App.xaml` file are not parsed
-- `using` directives are not generated: this will cause compile errors at the first execution. When this happens the generated file should be opened to add the missing directives. Manually added `usings` will be kept at the next execution of the script.
-- Dictionaries defined in different assemblies may cause errors (not tested)
