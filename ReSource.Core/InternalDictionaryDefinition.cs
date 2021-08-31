@@ -26,7 +26,7 @@ namespace ReSource.Core
             var dictDoc = LoadDocument();
 
             dictDoc.Descendants()
-                .Where(x => x.Name.LocalName.ToString() == nameof(StreamGeometry))
+                .Where(x => x.Name.LocalName.ToString() == nameof(StreamGeometry) || x.Name.LocalName.ToString() == nameof(PathGeometry))
                 .ToList()
                 .ForEach(x =>
                 {
@@ -34,7 +34,7 @@ namespace ReSource.Core
                     {
                         Figures = (PathFigureCollection)new PathFigureCollectionConverter().ConvertFromString(x.Value)
                     };
-                    ret.Add(new GeometryData { Geometry = geometry, Name = x.Attribute("Key").Value, Source = FullName });
+                    ret.Add(new GeometryData { Geometry = geometry, Name = x.Attributes().FirstOrDefault(a => a.Name.LocalName == "Key").Value, Source = FullName });
                 });
 
             return ret;

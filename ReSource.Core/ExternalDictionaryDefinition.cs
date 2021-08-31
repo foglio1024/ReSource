@@ -27,16 +27,19 @@ namespace ReSource.Core
             var ret = new List<GeometryData>();
 
             var resDict = GetMainResourceDictionary();
-
-            foreach (var key in resDict.Keys)
+            if (resDict != null)
             {
-                if (key is not string k) continue;
 
-                var val = resDict[key];
-                var resType = val.GetType().Name;
-                if (resType != nameof(StreamGeometry)) continue;
+                foreach (var key in resDict.Keys)
+                {
+                    if (key is not string k) continue;
 
-                ret.Add(new GeometryData { Geometry = (Geometry)val, Name = k, Source = FullName });
+                    var val = resDict[key];
+                    var resType = val.GetType().Name;
+                    if (resType != nameof(StreamGeometry)) continue;
+
+                    ret.Add(new GeometryData { Geometry = (Geometry)val, Name = k, Source = FullName });
+                }
             }
 
             return ret;
@@ -55,18 +58,20 @@ namespace ReSource.Core
             sb.AppendLine("\t{");
 
             var resDict = GetMainResourceDictionary();
-
-            foreach (var key in resDict.Keys)
+            if (resDict != null)
             {
-                if (!(key is string)) continue;
-                var val = resDict[key];
-                var resType = val.GetType().Name;
-                if (resType == "PathGeometry") resType = "Geometry";
+                foreach (var key in resDict.Keys)
+                {
+                    if (!(key is string)) continue;
+                    var val = resDict[key];
+                    var resType = val.GetType().Name;
+                    if (resType == "PathGeometry") resType = "Geometry";
 
-                var ns = val.GetType().FullName.Replace($".{resType}", "");
-                if (!writer.Usings.Contains(ns)) writer.Usings.Add(ns);
-                sb.AppendLine(
-                    $"\t\tpublic static {resType} {key} => (({resType})App.Current.FindResource(\"{key}\"));");
+                    var ns = val.GetType().FullName.Replace($".{resType}", "");
+                    if (!writer.Usings.Contains(ns)) writer.Usings.Add(ns);
+                    sb.AppendLine(
+                        $"\t\tpublic static {resType} {key} => (({resType})App.Current.FindResource(\"{key}\"));");
+                }
             }
 
             sb.AppendLine("\t}");
@@ -78,7 +83,15 @@ namespace ReSource.Core
         {
             // assume assemblies are in same folder as executable
             _ = Assembly.LoadFrom(Path.Combine(_assemblyDir, $"{ProjectName}.dll"));
-            return new ResourceDictionary { Source = new Uri(DictionaryPath, UriKind.Absolute) };
+            try
+            {
+                return new ResourceDictionary { Source = new Uri(DictionaryPath, UriKind.Absolute) };
+
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
