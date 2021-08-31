@@ -6,6 +6,7 @@
         xmlns:vm="clr-namespace:ReSource.SvgViewer.ViewModels"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Background="#22252e" Foreground="White"
         Title="{Binding Title}" Height="900" Width="900" ResizeMode="NoResize">
     <WindowChrome.WindowChrome>
