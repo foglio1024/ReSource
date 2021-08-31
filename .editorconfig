@@ -1,0 +1,12 @@
+﻿[*.cs]
+
+# IDE0008: Usa il tipo esplicito
+csharp_style_var_elsewhere = true
+csharp_style_var_when_type_is_apparent=true:silent
+csharp_style_var_for_built_in_types=true:silent
+
+# IDE0011: Aggiungi parentesi graffe
+csharp_prefer_braces = when_multiline
+
+# IDE0058: Il valore dell'espressione non viene mai usato
+csharp_style_unused_value_expression_statement_preference = discard_variable
