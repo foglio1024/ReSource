@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
@@ -82,7 +83,19 @@ namespace ReSource.Core
         private ResourceDictionary GetMainResourceDictionary()
         {
             // assume assemblies are in same folder as executable
-            _ = Assembly.LoadFrom(Path.Combine(_assemblyDir, $"{ProjectName}.dll"));
+
+
+            // This check prevents different versions of common assemblies (eg. Nostrum.WPF.dll)
+            // from being loaded and cause FileLoadExceptions.
+            // This will cause some resources to not be parsed if the target assembly uses a
+            // newer version of Nostrum.WPF package.
+            // TODO: A better approach would be to unload the current AppDomand and create a
+            // new one which includes the latest version from the target assembly.
+            if (!AppDomain.CurrentDomain.GetAssemblies().ToList().Any(a => a.GetName().Name == ProjectName))
+            {
+                _ = Assembly.LoadFrom(Path.Combine(_assemblyDir, $"{ProjectName}.dll"));
+            }
+
             try
             {
                 return new ResourceDictionary { Source = new Uri(DictionaryPath, UriKind.Absolute) };
