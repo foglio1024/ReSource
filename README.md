@@ -44,17 +44,25 @@ The script will parse it as XML and produce the following output:
 
 namespace TCC.R
 {
-   public static class SVG
+   public class SVG : RH
    {
-      public static Geometry SvgClose => ((Geometry)App.Current.FindResource("SvgClose"));
+      public static Geometry SvgClose => Get<Geometry>("SvgClose");
       ...
    }
-   public static class Colors
+   public class Colors : RH
    {
-      public static Color CardDarkColor => ((Color)App.Current.FindResource("CardDarkColor"));
+      public static Color CardDarkColor => Get<Color>("CardDarkColor");
       ...
    }
    ...
+   
+   public class RH
+   {
+        protected static T Get<T>(string res)
+		{
+			return (T)Application.Current.FindResource(res);
+		}
+   }
 }
 ```
 
