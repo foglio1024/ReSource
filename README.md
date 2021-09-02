@@ -3,21 +3,28 @@ A small C# script which builds static resource references from ResourceDictionar
 
 ## Usage
 `
-.\ReSource.exe <source-csproj-path> <main-source-assembly> <destination-cs-file-path> <namespace>
+.\ReSource.CLI.exe <source-csproj-path> <main-source-assembly> <destination-cs-file-path> <namespace>
 `
 
-Best way to run this is to set it as pre-build command in **project properties** -> **Build events** -> **Pre-build event command line** box, example:
+The best way to run this is to set it as pre-build command in **project properties** -> **Build events** -> **Pre-build event command line** box, example:
 ```
-ReSource.exe $(ProjectDir)\TCC.csproj $(TargetDir) $(ProjectDir)\R.cs TCC.R
+ReSource.CLI.exe $(ProjectPath) $(TargetPath) $(ProjectDir)\R.cs $(ProjectName).R
+```
+
+or directly in the `.csproj` file:
+
+```xml
+<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="path\\to\\ReSource.CLI.exe $(ProjectPath) $(TargetPath) $(ProjectDir)\\R.cs $(ProjectName).R" />
+</Target>
 ```
 
 ## Example
 Consider the following `App.xaml` file:
-```xaml
+```xml
 <Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="TCC.App"
-             Startup="OnStartup">
+             x:Class="TCC.App">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -53,17 +60,17 @@ namespace TCC.R
 
 Resources can then be referenced directly:
 ```csharp
-// normal way 
+// + NORMAL WAY
 //  - prone to typos
 //  - need to know resource type beforehand to properly cast it
 //  - can cause runtime exceptions
 var res = ((Color)App.Current.FindResource("HpColor"));
 
 
-// strongly-typed way 
-// - no typos due to not using string name directly
-// - type already known
-// - runtime exceptions only if the resource file is not re-generated before build (which shouldn't happen)
+// + STRONGLY-TYPED WAY
+//  - no typos due to not using string name directly
+//  - type already known
+//  - runtime exceptions only if the resource file is not re-generated before build (which shouldn't happen)
 var res = TCC.R.Colors.HpColor;
 
 ```
