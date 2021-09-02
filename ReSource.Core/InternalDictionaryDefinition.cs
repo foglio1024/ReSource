@@ -52,9 +52,7 @@ namespace ReSource.Core
 
             var dictDoc = LoadDocument();
 
-            sb.AppendLine($"\t// {DictionaryPath}");
-            sb.AppendLine($"\tpublic static class {DictionaryName}");
-            sb.AppendLine("\t{");
+            sb.AppendLine(BuildClassHeader(DictionaryName, DictionaryPath));
 
             dictDoc.Descendants()
                 .Where(x => x.Name.LocalName.ToString() != nameof(ResourceDictionary))
@@ -69,14 +67,14 @@ namespace ReSource.Core
                         {
                             if (a.Name.LocalName != "Key") return;
 
-                            var resName = a.Value;
-                            if (resName.StartsWith("{")) return;
+                            var key = a.Value;
+                            if (key.StartsWith("{")) return;
 
                             var ns = x.Name.Namespace.NamespaceName.Replace("clr-namespace:", "");
                             if (ns.Contains(";")) ns = ns.Split(';')[0];
                             if (!ns.StartsWith("http")) writer.AddUsing(ns);
 
-                            sb.AppendLine($"\t\tpublic static {resType} {resName} => (({resType})App.Current.FindResource(\"{resName}\"));");
+                            sb.AppendLine(BuildEntry(key,resType));
                         });
                 });
 

@@ -40,5 +40,19 @@ namespace ReSource.Core
                 _ => string.Compare(DictionaryName, other.DictionaryName, StringComparison.Ordinal)
             };
         }
+
+        protected string BuildEntry(string key, string resType)
+        {
+            //return $"\t\tpublic static {resType} {key} => ({resType})Application.Current.FindResource(\"{key}\");";
+
+            return $"\t\tpublic static {resType} {key} => Get<{resType}>(\"{key}\");";
+        }
+
+        protected string BuildClassHeader(string className, string path)
+        {
+            return $"\t// {path}\n" + 
+                   $"\tpublic class {className} : RH\n" +
+                    "\t{";
+        }
     }
 }

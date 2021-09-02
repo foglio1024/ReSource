@@ -49,14 +49,12 @@ namespace ReSource.Core
         public override string Build(Writer writer)
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"\t// {DictionaryPath}");
             var className = FullName;
             if (className.Contains("."))
             {
                 className = className.Replace(".", "_");
             }
-            sb.AppendLine($"\tpublic static class {className}");
-            sb.AppendLine("\t{");
+            sb.AppendLine(BuildClassHeader(className, DictionaryPath));
 
             var resDict = GetMainResourceDictionary();
             if (resDict != null)
@@ -70,8 +68,7 @@ namespace ReSource.Core
 
                     var ns = val.GetType().FullName.Replace($".{resType}", "");
                     writer.AddUsing(ns);
-                    sb.AppendLine(
-                        $"\t\tpublic static {resType} {key} => (({resType})App.Current.FindResource(\"{key}\"));");
+                    sb.AppendLine(BuildEntry(key.ToString(),resType));
                 }
             }
 

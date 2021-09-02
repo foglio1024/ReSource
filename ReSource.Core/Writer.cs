@@ -39,10 +39,24 @@ namespace ReSource.Core
         {
             _contentSb.AppendLine($"namespace {ns}");
             _contentSb.AppendLine("{");
+
+        }
+
+        private void AddHelperClass()
+        {
+            _contentSb.AppendLine("\tpublic class RH");
+            _contentSb.AppendLine("\t{");
+            _contentSb.AppendLine("\t\tprotected static T Get<T>(string res)");
+            _contentSb.AppendLine("\t\t{");
+            _contentSb.AppendLine("\t\t\treturn (T)Application.Current.FindResource(res);");
+            _contentSb.AppendLine("\t\t}");
+            _contentSb.AppendLine("\t}");
         }
 
         public void EndMainNamespace()
         {
+            AddHelperClass();
+
             _contentSb.AppendLine("}");
         }
 
