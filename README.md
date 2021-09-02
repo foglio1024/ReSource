@@ -1,5 +1,5 @@
-# ReSource
-A small C# script which builds static resource references from ResourceDictionaries in WPF applications. **This allows XAML-defined resources to be referenced in a strongly-typed way in C#**, without using the `FindResource("Name")` method.
+# ReSource.CLI
+A small C# console application which builds static resource references from ResourceDictionaries in WPF applications. **This allows XAML-defined resources to be referenced in a strongly-typed way in C#**, without using the `FindResource("Name")` method.
 
 ## Usage
 `
@@ -85,3 +85,18 @@ var res = TCC.R.Colors.HpColor;
 
 ## Issues
 - Resources defined **directly** in the `App.xaml` file are not parsed
+
+# SVG Viewer
+
+![SvgViewer](https://i.imgur.com/9iZs3xW.png)
+
+This WPF application consists of a single window which shows all the `PathGeometry` resources defined in the target assembly and its dependencies. It can be used as a Visual Studio external tool (Tools menu).
+
+Hovering an icon will display its key and the `<Assembly>_<ResourceDictionary>` it's from. Clicking the icon will copy it's key to the clipboard.
+
+## Known issues
+Some resource dictionaries might not be parsed due to the following reasons:
+- mismatch between SvgViewer's and target's (or dependencies') .NET version
+- mismatch between `.csproj` name and output file name
+
+
