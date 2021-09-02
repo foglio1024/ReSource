@@ -69,7 +69,7 @@ namespace ReSource.Core
                     if (resType == "PathGeometry") resType = "Geometry";
 
                     var ns = val.GetType().FullName.Replace($".{resType}", "");
-                    if (!writer.Usings.Contains(ns)) writer.Usings.Add(ns);
+                    writer.AddUsing(ns);
                     sb.AppendLine(
                         $"\t\tpublic static {resType} {key} => (({resType})App.Current.FindResource(\"{key}\"));");
                 }

@@ -62,5 +62,10 @@ namespace ReSource.Core
         {
             _contentSb.AppendLine(dict);
         }
+
+        internal void AddUsing(string ns)
+        {
+            if (!Usings.Contains(ns)) Usings.Add(ns);
+        }
     }
 }

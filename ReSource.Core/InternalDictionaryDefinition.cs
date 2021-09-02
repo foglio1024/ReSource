@@ -74,7 +74,7 @@ namespace ReSource.Core
 
                             var ns = x.Name.Namespace.NamespaceName.Replace("clr-namespace:", "");
                             if (ns.Contains(";")) ns = ns.Split(';')[0];
-                            if (!ns.StartsWith("http") && !writer.Usings.Contains(ns)) writer.Usings.Add(ns);
+                            if (!ns.StartsWith("http")) writer.AddUsing(ns);
 
                             sb.AppendLine($"\t\tpublic static {resType} {resName} => (({resType})App.Current.FindResource(\"{resName}\"));");
                         });
