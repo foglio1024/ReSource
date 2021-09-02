@@ -8,9 +8,9 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Background="#22252e" Foreground="White"
-        Title="{Binding Title}" Height="900" Width="900" ResizeMode="NoResize">
+        Title="{Binding Title}" Height="700" Width="700" ResizeMode="CanResize">
     <WindowChrome.WindowChrome>
-        <WindowChrome GlassFrameThickness="1 1 1 1" ResizeBorderThickness="0 0 0 0" CaptionHeight="0" />
+        <WindowChrome GlassFrameThickness="1 1 1 1" ResizeBorderThickness="3 3 3 3" CaptionHeight="0" />
     </WindowChrome.WindowChrome>
     <Grid>
         <Grid.RowDefinitions>
@@ -23,7 +23,8 @@
                 HorizontalAlignment="Right" 
                 Padding="6" 
                 Command="{Binding CloseCommand}"
-                Background="Transparent">
+                Background="Transparent"
+                >
             <Path Data="{StaticResource SvgClose}" Fill="White"/>
         </Button>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
@@ -43,7 +44,9 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type vm:GeometryViewModel}">
                                     <Button Style="{StaticResource ButtonContentOpacityStyle}"
-                                            Command="{Binding CopyCommand}">
+                                            Command="{Binding CopyCommand}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
                                         <Button.ToolTip>
                                             <TextBlock FontSize="14">
                                                 <Run Text="{Binding Data.Name, Mode=OneWay}" FontWeight="DemiBold" Foreground="White"/>
@@ -53,21 +56,21 @@
                                         </Button.ToolTip>
                                         <Grid Width="Auto"
                                               Height="Auto"
-                                              HorizontalAlignment="Stretch"
-                                              Margin="30">
-                                            <Path Width="40"
-                                                  Height="40"
+                                              HorizontalAlignment="Stretch">
+                                            <Path Width="30"
+                                                  Height="30"
                                                   Data="{Binding Data.Geometry}"
                                                   HorizontalAlignment="Center"
                                                   Stretch="Uniform"
-                                                  Fill="White" />
+                                                  Fill="White"
+                                              Margin="10" />
                                         </Grid>
                                     </Button>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <UniformGrid Columns="8" />
+                                    <UniformGrid Columns="8"/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
