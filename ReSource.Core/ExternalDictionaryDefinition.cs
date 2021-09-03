@@ -57,6 +57,7 @@ namespace ReSource.Core
             sb.AppendLine(BuildClassHeader(className, DictionaryPath));
 
             var resDict = GetMainResourceDictionary();
+            var lines = new List<string>();
             if (resDict != null)
             {
                 foreach (var key in resDict.Keys)
@@ -68,9 +69,13 @@ namespace ReSource.Core
 
                     var ns = val.GetType().FullName.Replace($".{resType}", "");
                     writer.AddUsing(ns);
-                    sb.AppendLine(BuildEntry(key.ToString(),resType));
+                    lines.Add(BuildEntry(key.ToString(), resType));
                 }
             }
+
+            lines.Sort();
+
+            lines.ForEach(l => sb.AppendLine(l));
 
             sb.AppendLine("\t}");
 
@@ -81,13 +86,13 @@ namespace ReSource.Core
         {
             // assume assemblies are in same folder as executable
 
-
             // This check prevents different versions of common assemblies (eg. Nostrum.WPF.dll)
             // from being loaded and cause FileLoadExceptions.
             // This will cause some resources to not be parsed if the target assembly uses a
             // newer version of Nostrum.WPF package.
             // TODO: A better approach would be to unload the current AppDomand and create a
             // new one which includes the latest version from the target assembly.
+            // TODO: prevent this from blocking target assembly
             if (!AppDomain.CurrentDomain.GetAssemblies().ToList().Any(a => a.GetName().Name == ProjectName))
             {
                 _ = Assembly.LoadFrom(Path.Combine(_assemblyDir, $"{ProjectName}.dll"));
@@ -96,7 +101,6 @@ namespace ReSource.Core
             try
             {
                 return new ResourceDictionary { Source = new Uri(DictionaryPath, UriKind.Absolute) };
-
             }
             catch
             {

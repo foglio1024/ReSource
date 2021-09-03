@@ -54,6 +54,8 @@ namespace ReSource.Core
 
             sb.AppendLine(BuildClassHeader(DictionaryName, DictionaryPath));
 
+            var lines = new List<string>();
+
             dictDoc.Descendants()
                 .Where(x => x.Name.LocalName.ToString() != nameof(ResourceDictionary))
                 .ToList()
@@ -74,9 +76,11 @@ namespace ReSource.Core
                             if (ns.Contains(";")) ns = ns.Split(';')[0];
                             if (!ns.StartsWith("http")) writer.AddUsing(ns);
 
-                            sb.AppendLine(BuildEntry(key,resType));
+                            lines.Add(BuildEntry(key, resType));
                         });
                 });
+            lines.Sort();
+            lines.ForEach(l => sb.AppendLine(l));
 
             sb.AppendLine("\t}");
 
