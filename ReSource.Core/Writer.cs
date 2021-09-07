@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace ReSource.Core
@@ -40,6 +41,18 @@ namespace ReSource.Core
             _contentSb.AppendLine($"namespace {ns}");
             _contentSb.AppendLine("{");
 
+        }
+
+        public void AddExistingUsings(string outputPath)
+        {
+            if (!File.Exists(outputPath)) return;
+
+            var usingLines = File.ReadAllLines(outputPath).Where(l => l.StartsWith("using "));
+
+            foreach (var line in usingLines)
+            {
+                AddUsing(line.Replace("using ", "").Replace(";", ""));
+            }
         }
 
         private void AddHelperClass()

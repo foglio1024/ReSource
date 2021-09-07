@@ -10,33 +10,35 @@ namespace ReSource
         [STAThread]
         private static void Main(string[] args)
         {
-            var _csprojPath = args[0];
-            if (!File.Exists(_csprojPath))
+            var csprojPath = args[0];
+            if (!File.Exists(csprojPath))
             {
-                Console.WriteLine($"[RS] Error: {_csprojPath} not found");
+                Console.WriteLine($"[RS] Error: {csprojPath} not found");
                 Environment.Exit(-1);
             }
 
-            var _assemblyPath = args[1];
-            if (!File.Exists(_assemblyPath))
+            var assemblyPath = args[1];
+            if (!File.Exists(assemblyPath))
             {
-                Console.WriteLine($"[RS] Warning: {_assemblyPath} not found, skipping.");
+                Console.WriteLine($"[RS] Warning: {assemblyPath} not found, skipping.");
                 Environment.Exit(0);
             }
 
-            var _outputPath = args[2];
-            var _namespace = args[3];
+            var outputPath = args[2];
+            var @namespace = args[3];
 
             if (!UriParser.IsKnownScheme("pack"))
                 _ = new Application();
 
-            Console.WriteLine($"[RS] Generating resources for {_csprojPath}");
+            Console.WriteLine($"[RS] Generating resources for {csprojPath}");
 
-            var writer = new Writer(Path.GetFileNameWithoutExtension(_csprojPath));
+            var writer = new Writer(Path.GetFileNameWithoutExtension(csprojPath));
 
-            writer.StartMainNamespace(_namespace);
+            writer.AddExistingUsings(outputPath);
 
-            new AssemblyReader(_assemblyPath, _csprojPath)
+            writer.StartMainNamespace(@namespace);
+
+            new AssemblyReader(assemblyPath, csprojPath)
             .GetDictionaries().ForEach(d =>
             {
                 Console.WriteLine($"[RS] Processing {d.FullName}");
@@ -45,7 +47,7 @@ namespace ReSource
 
             writer.EndMainNamespace();
 
-            writer.Save(_outputPath);
+            writer.Save(outputPath);
 
             Console.WriteLine("[RS] Done!");
         }
