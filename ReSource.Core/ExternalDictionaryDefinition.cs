@@ -62,15 +62,25 @@ namespace ReSource.Core
             {
                 foreach (var key in resDict.Keys)
                 {
-                    if (!(key is string)) continue;
-                    var val = resDict[key];
-                    var resType = val.GetType().Name;
-                    if (resType == "PathGeometry") resType = "Geometry";
+                    if (key is not string) continue;
+                    try
+                    {
+                        var val = resDict[key];
+                        var resType = val.GetType().Name;
+                        if (resType == "PathGeometry") resType = "Geometry";
 
-                    var ns = val.GetType().FullName.Replace($".{resType}", "");
-                    writer.AddUsing(ns);
-                    lines.Add(BuildEntry(key.ToString(), resType));
+                        var ns = val.GetType().FullName.Replace($".{resType}", "");
+                        writer.AddUsing(ns);
+                        lines.Add(BuildEntry(key.ToString(), resType));
+
+                    }
+                    catch
+                    {
+                        Console.WriteLine($"[RS] Could not load resource {key}, skipping...");
+                    }
                 }
+
+                // todo: keep keys of failed entries and try parsing them from dictionary loaded as xml file
             }
 
             lines.Sort();

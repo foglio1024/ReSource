@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace ReSource.Core
 {
@@ -41,18 +42,22 @@ namespace ReSource.Core
             };
         }
 
-        protected string BuildEntry(string key, string resType)
+        protected string BuildEntry(string key, string resType, int additionalIndent = 0)
         {
             //return $"\t\tpublic static {resType} {key} => ({resType})Application.Current.FindResource(\"{key}\");";
+            var tabs = "\t\t";
+            Enumerable.Range(0, additionalIndent).ToList().ForEach(x => tabs += "\t");
 
-            return $"\t\tpublic static {resType} {key} => Get<{resType}>(\"{key}\");";
+            return $"{tabs}public static {resType} {key} => Get<{resType}>(\"{key}\");";
         }
 
-        protected string BuildClassHeader(string className, string path)
+        protected string BuildClassHeader(string className, string path, int additionalIndent = 0)
         {
-            return $"\t// {path}\n" + 
-                   $"\tpublic class {className} : RH\n" +
-                    "\t{";
+            var tabs = "\t";
+            Enumerable.Range(0, additionalIndent).ToList().ForEach(x => tabs += "\t");
+            return $"{tabs}// {path}\n" + 
+                   $"{tabs}public class {className} : RH\n" +
+                   $"{tabs}{{";
         }
     }
 }
